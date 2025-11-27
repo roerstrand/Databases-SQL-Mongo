@@ -27,21 +27,49 @@ use smallDogs;
             weight: { min: 3, max: 6, unit: "kg"},
             lifeExpectancy: { min: 14, max: 16, unit: "years"},
             commonColors: [ "Black", "Cream", "Gold", "Red"]
-        },
-
-
+            },
 
         ]);
 
     db.smallDogs.insertOne(
         {
-        name: "Shih Tzu",
-        origin: "Tibet",
-        height: { min: 20, max: 28, unit: "cm"},
-        weight: { min: 4, max: 7.5, unit: "kg"},
-        lifeExpectancy: { min: 10, max: 16, unit: "years"},
-        commonColors: [ "Black", "White", "Gold", "Silver"]});
+            name: "Shih Tzu",
+            origin: "Tibet",
+            height: { min: 20, max: 28, unit: "cm"},
+            weight: { min: 4, max: 7.5, unit: "kg"},
+            lifeExpectancy: { min: 10, max: 16, unit: "years"},
+            commonColors: [ "Black", "White", "Gold", "Silver"]});
 
     db.smallDogs.find()
 
-s
+    db.smallDogs.updateOne({ "Shih Tzu"}, { $set: { litterSize: { min: 2, max: 9 } } })
+
+    db.smallDogs.deleteOne( { name: "Chihuahua"} )
+
+    db.smallDogs.find ( { name: "Pomeranian"})
+
+    db.smallDogs.find(
+        {
+            "lifeExpectancy.min": {$gte: 12},
+            "lifeExpectancy.max": {$lte: 18 }
+            }).sort( { "lifeExpectancy.min": 1, name: 1, _id: 0} )
+
+    db.smallDogs.updateOne(
+        { name: "Bichón Havanés" },
+        { $push: { commonColors: "Chocolate" } }
+        )
+
+    db.smallDogs.updateOne( { name: "Pomeranian"}, { $pull: { commonColors: "White"},
+        $push: { commonColors: "Sable"}})
+
+    db.smallDogs.countDocuments()
+
+    db.smallDogs.countDocuments(
+        { "height.max": { $gte: 25} } )
+
+    db.smallDogs.createIndex( { name: 1}, {unique: true })
+
+    **Kan ej lägga in pga unikt index
+
+    db.smallDogs.insertOne( { name: "Pomeranian"})
+
